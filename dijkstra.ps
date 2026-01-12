@@ -1,0 +1,63 @@
+% Implémentation simple de Dijkstra en PostScript
+
+/INF 1000000 def
+/N 5 def
+
+/graph [
+  [0 4 0 0 2]
+  [4 0 3 0 0]
+  [0 3 0 5 0]
+  [0 0 5 0 1]
+  [2 0 0 1 0]
+] def
+
+/dist [INF INF INF INF INF] def
+/visited [false false false false false] def
+
+/dist 0 0 put   % sommet source
+
+/minDistance {
+  /min INF def
+  /u -1 def
+  0 1 N 1 sub {
+    /i exch def
+    visited i get not
+    {
+      dist i get min lt
+      {
+        /min dist i get def
+        /u i def
+      } if
+    } if
+  } for
+  u
+} def
+
+/updateDistances {
+  /u exch def
+  0 1 N 1 sub {
+    /v exch def
+    visited v get not
+    graph u get v get 0 ne and
+    {
+      dist u get
+      graph u get v get add
+      dist v get lt
+      {
+        dist v
+        dist u get graph u get v get add
+        put
+      } if
+    } if
+  } for
+} def
+
+0 1 N 2 sub {
+  pop
+  minDistance
+  /u exch def
+  visited u true put
+  u updateDistances
+} for
+
+dist ==
