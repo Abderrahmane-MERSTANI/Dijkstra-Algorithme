@@ -1,0 +1,44 @@
+$ include "seed7_05.s7i";
+
+const integer N = 5;
+const integer INF = 1000000;
+
+var array array integer: graph := [
+  [0, 4, 0, 0, 2],
+  [4, 0, 3, 0, 0],
+  [0, 3, 0, 5, 0],
+  [0, 0, 5, 0, 1],
+  [2, 0, 0, 1, 0]
+];
+
+var array integer: dist := [INF, INF, INF, INF, INF];
+var array boolean: visited := [FALSE, FALSE, FALSE, FALSE, FALSE];
+
+dist[1] := 0;   # sommet source (index 1)
+
+for step range 1 to N - 1 do
+  var integer: min := INF;
+  var integer: u := 0;
+
+  for i range 1 to N do
+    if not visited[i] and dist[i] < min then
+      min := dist[i];
+      u := i;
+    end if;
+  end for;
+
+  if u = 0 then
+    break;
+  end if;
+
+  visited[u] := TRUE;
+
+  for v range 1 to N do
+    if not visited[v] and graph[u][v] <> 0 and
+       dist[u] + graph[u][v] < dist[v] then
+      dist[v] := dist[u] + graph[u][v];
+    end if;
+  end for;
+end for;
+
+writeln(dist);
