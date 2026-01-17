@@ -1,0 +1,45 @@
+procedure dijkstra()
+    INF := 1000000
+    N := 5
+
+    graph := [
+        [0, 4, 0, 0, 2],
+        [4, 0, 3, 0, 0],
+        [0, 3, 0, 5, 0],
+        [0, 0, 5, 0, 1],
+        [2, 0, 0, 1, 0]
+    ]
+
+    dist := []
+    visited := []
+
+    every i := 1 to N do {
+        dist[i] := INF
+        visited[i] := 0
+    }
+
+    dist[1] := 0   # sommet source
+
+    every step := 1 to N - 1 do {
+        min := INF
+        u := 0
+
+        every i := 1 to N do
+            if visited[i] = 0 & dist[i] < min then {
+                min := dist[i]
+                u := i
+            }
+
+        if u = 0 then break
+        visited[u] := 1
+
+        every v := 1 to N do
+            if visited[v] = 0 & graph[u][v] ~= 0 &
+               dist[u] + graph[u][v] < dist[v] then
+                dist[v] := dist[u] + graph[u][v]
+    }
+
+    write("Distances : ", dist)
+end
+
+dijkstra()
